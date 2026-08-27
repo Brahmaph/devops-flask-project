@@ -8,11 +8,19 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                bat 'pytest'
-            }
-        }
+        // stage('Test') {
+        //     steps {
+        //         bat 'pytest'
+        //     }
+        // }
+           stage('Test') {
+               steps {
+                   bat 'where python'
+                   bat 'python --version'
+                   bat 'python -m pip --version'
+                   bat 'python -m pytest --version'
+               }
+           }
 
         stage('Build Docker Image') {
             steps {
