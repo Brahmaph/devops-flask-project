@@ -2,40 +2,30 @@ pipeline {
     agent any
 
     stages {
+
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
 
-        // stage('Test') {
-        //     steps {
-        //         bat 'pytest'
-        //     }
-        // }
-           stage('Test') {
-                steps {
-                    bat 'python -m pip install -r requirements.txt'
-                    bat 'python -m pytest'
-                }
-            }
-
-
-        stage('Build Docker Image') {
+        stage('Test') {
             steps {
-                bat 'docker build -t your-image:latest .'
+                bat 'python -m pip install -r requirements.txt'
+                bat 'python -m pytest'
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Build Docker Image') {
             steps {
-                bat 'docker push your-image:latest'
+                bat 'docker build -t devops-flask-project:latest .'
             }
         }
 
         stage('Deploy') {
             steps {
-                bat 'docker run -d -p 5000:5000 your-image:latest'
+                bat 'docker rm -f devops-flask-project || exit 0'
+                bat 'docker run -d --name devops-flask-project -p 5000:5000 devops-flask-project:latest'
             }
         }
     }
@@ -44,6 +34,7 @@ pipeline {
         success {
             echo 'Pipeline completed successfully!'
         }
+
         failure {
             echo 'Pipeline failed!'
         }
