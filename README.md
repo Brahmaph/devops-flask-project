@@ -107,3 +107,16 @@ PHASE 6
 Prometheus
    ↓
 Grafana
+---------------------------------update jenkins file and add dockerhub details like below --------------
+stage('Push Docker Image') {
+    steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'dockerhub',
+            usernameVariable: 'DOCKER_USERNAME',
+            passwordVariable: 'DOCKER_PASSWORD'
+        )]) {
+            bat 'echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin'
+            bat 'docker push brahmap/devops-flask-project:latest'
+        }
+    }
+}
