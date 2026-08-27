@@ -14,13 +14,12 @@ pipeline {
         //     }
         // }
            stage('Test') {
-               steps {
-                   bat 'where python'
-                   bat 'python --version'
-                   bat 'python -m pip --version'
-                   bat 'python -m pytest --version'
-               }
-           }
+                steps {
+                    bat 'python -m pip install -r requirements.txt'
+                    bat 'python -m pytest'
+                }
+            }
+
 
         stage('Build Docker Image') {
             steps {
